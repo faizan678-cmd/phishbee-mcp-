@@ -2,12 +2,10 @@ from mcp.server.fastmcp import FastMCP
 import httpx
 import os
 import uvicorn
-from starlette.routing import Route
-from starlette.responses import JSONResponse
 
 mcp = FastMCP("PhishBee")
 
-PHISHBEE_URL = "https://phishbee-up.railway.app"
+PHISHBEE_URL = "https://phishbee-io.up.railway.app"
 
 @mcp.tool()
 async def check_url(url: str) -> str:
@@ -23,8 +21,12 @@ async def check_url(url: str) -> str:
     except Exception as e:
         return f"Error: {str(e)}"
 
-app = mcp.streamable_http_app()
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(
+        mcp.streamable_http_app(),
+        host="0.0.0.0",
+        port=port,
+        forwarded_allow_ips="*",
+        proxy_headers=True
+    )
