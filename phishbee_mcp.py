@@ -1,6 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 import httpx
 import os
+import uvicorn
 
 mcp = FastMCP("PhishBee")
 
@@ -20,6 +21,8 @@ async def check_url(url: str) -> str:
     except Exception as e:
         return f"Error: {str(e)}"
 
+app = mcp.streamable_http_app()
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=port)
