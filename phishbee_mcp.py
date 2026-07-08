@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 
 mcp = FastMCP("PhishBee")
 
-PHISHBEE_URL = "https://phishbee.up.railway.app"
+PHISHBEE_URL = "https://phishbee-up.railway.app"
 
 @mcp.tool()
 async def check_url(url: str) -> str:
